@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عرض تقديمي: مؤسسة بلاي فيلم للتجارة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            height: 100vh;
+        }
+        .slide {
+            scroll-snap-align: start;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+            text-align: center;
+        }
+        .slide-content {
+            max-width: 1200px;
+            width: 100%;
+        }
+        .glass-bg {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+        }
+        .animated-gradient {
+            background: linear-gradient(-45deg, #1a202c, #2d3748, #4a5568, #2c5282);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        /* Custom scroll down indicator */
+        .scroll-down {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 50px;
+            border: 2px solid white;
+            border-radius: 50px;
+        }
+        .scroll-down::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            width: 6px;
+            height: 6px;
+            margin-left: -3px;
+            background-color: white;
+            border-radius: 100%;
+            animation: scroll-down-anim 2s infinite;
+        }
+        @keyframes scroll-down-anim {
+            0% {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+
+    <!-- الشريحة 1: صفحة العنوان -->
+    <section class="slide animated-gradient">
+        <div class="slide-content text-center space-y-6">
+            <h1 class="text-5xl md:text-7xl font-extrabold text-teal-300 drop-shadow-lg">مؤسسة بلاي فيلم للتجارة</h1>
+            <h2 class="text-2xl md:text-4xl font-bold text-gray-200">ريادة الأمن الذكي والتقنيات المتقدمة</h2>
+            <div class="mt-8 pt-6 border-t-2 border-teal-400 max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 text-lg">
+                <p><strong class="text-teal-300">السجل التجاري:</strong> نشط</p>
+                <p><strong class="text-teal-300">الرقم الوطني الموحد:</strong> 7031045144</p>
+                <p><strong class="text-teal-300">العنوان:</strong> مكة المكرمة - حي النسيم</p>
+                <p><strong class="text-teal-300">التواجد:</strong> الرياض، مكة، جدة</p>
+            </div>
+             <div class="flex justify-center pt-4">
+                <img src="https://vision2030.gov.sa/v2030/images/2030-logo-en.svg" alt="شعار رؤية 2030" class="h-20" style="filter: brightness(0) invert(1);">
+            </div>
+        </div>
+        <div class="scroll-down"></div>
+    </section>
+
+    <!-- الشريحة 2: من نحن ورؤيتنا -->
+    <section class="slide bg-gray-800">
+        <div class="slide-content glass-bg p-8 md:p-12">
+            <h2 class="text-4xl md:text-5xl font-extrabold mb-6 text-teal-300">من نحن: شريككم الاستراتيجي</h2>
+            <p class="text-lg md:text-xl text-gray-300 leading-relaxed mb-6">
+                كيان سعودي رائد، متخصص في تصميم ونشر وصيانة حلول الأمن الذكي المتطورة وتقنيات التيار الخفيف المتقدمة. نلتزم برفع مستويات السلامة والكفاءة التشغيلية بما يتماشى مع أعلى المعايير العالمية.
+            </p>
+            <h3 class="text-3xl font-bold mb-4 text-white">رؤيتنا: المساهمة في تحقيق رؤية المملكة 2030</h3>
+            <p class="text-lg md:text-xl text-gray-300 leading-relaxed">
+                نتطلع إلى أن نكون القوة الدافعة للتحول التكنولوجي في المملكة، من خلال توفير حلول مبتكرة وموثوقة تدعم بناء مجتمع حيوي، اقتصاد مزدهر، ووطن طموح.
+            </p>
+        </div>
+        <div class="scroll-down"></div>
+    </section>
+
+    <!-- الشريحة 3: نبذة عن السوق السعودي -->
+    <section class="slide bg-gray-900">
+        <div class="slide-content">
+            <h2 class="text-4xl md:text-5xl font-extrabold mb-10 text-teal-300">سوق واعد ونمو متسارع</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass-bg p-8 text-center transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="text-2xl font-bold mb-4">سوق الأمن السيبراني</h3>
+                    <p class="text-5xl font-extrabold text-teal-300">3.67</p>
+                    <p class="text-xl text-gray-300">مليار دولار بحلول 2029</p>
+                    <p class="mt-4 text-lg text-teal-400">بمعدل نمو سنوي 13.78%</p>
+                </div>
+                <div class="glass-bg p-8 text-center transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="text-2xl font-bold mb-4">سوق تقنية المعلومات</h3>
+                    <p class="text-5xl font-extrabold text-teal-300">103</p>
+                    <p class="text-xl text-gray-300">مليارات ريال في 2025</p>
+                    <p class="mt-4 text-lg text-teal-400">نمو هائل مدفوع بالتحول الرقمي</p>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-down"></div>
+    </section>
+
+    <!-- الشريحة 4 و 5: محفظة حلولنا الشاملة -->
+    <section class="slide bg-gray-800">
+        <div class="slide-content">
+            <h2 class="text-4xl md:text-5xl font-extrabold mb-10 text-teal-300">محفظة حلولنا الشاملة</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-right glass-bg">
+                    <thead class="bg-teal-500/20">
+                        <tr>
+                            <th class="p-4 text-lg font-bold">فئة الخدمة</th>
+                            <th class="p-4 text-lg font-bold">الحلول الرئيسية</th>
+                            <th class="p-4 text-lg font-bold hidden md:table-cell">الفوائد الأساسية</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-700">
+                        <tr class="hover:bg-gray-700/50 transition-colors">
+                            <td class="p-4 font-semibold">المراقبة المتقدمة</td>
+                            <td class="p-4">كاميرات 4K/8K، تحليلات AI، أنظمة إنذار.</td>
+                            <td class="p-4 hidden md:table-cell">كشف استباقي، تفاصيل دقيقة، رؤية ليلية.</td>
+                        </tr>
+                        <tr class="hover:bg-gray-700/50 transition-colors">
+                            <td class="p-4 font-semibold">التحكم بالوصول</td>
+                            <td class="p-4">أنظمة بيومترية، أقفال ذكية، بوابات إلكترونية.</td>
+                            <td class="p-4 hidden md:table-cell">كفاءة تشغيلية، تحكم دقيق، إدارة مبسطة.</td>
+                        </tr>
+                        <tr class="hover:bg-gray-700/50 transition-colors">
+                            <td class="p-4 font-semibold">الاتصالات والصوتيات</td>
+                            <td class="p-4">سنترال VoIP، أنظمة صوت احترافية.</td>
+                            <td class="p-4 hidden md:table-cell">اتصال سلس، صوت عالي الوضوح، ربط فعال.</td>
+                        </tr>
+                        <tr class="hover:bg-gray-700/50 transition-colors">
+                            <td class="p-4 font-semibold">المباني الذكية</td>
+                            <td class="p-4">تحكم متكامل (إضاءة، تكييف)، شبكات.</td>
+                            <td class="p-4 hidden md:table-cell">توفير طاقة، راحة، بنية تحتية رقمية.</td>
+                        </tr>
+                        <tr class="hover:bg-gray-700/50 transition-colors">
+                            <td class="p-4 font-semibold">الطاقة المتخصصة</td>
+                            <td class="p-4">ألواح طاقة شمسية، مولدات احتياطية.</td>
+                            <td class="p-4 hidden md:table-cell">استدامة، استمرارية، تقليل التكاليف.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="scroll-down"></div>
+    </section>
+
+    <!-- الشريحة 6: التزامنا بالتميز -->
+    <section class="slide bg-gray-900">
+        <div class="slide-content">
+            <h2 class="text-4xl md:text-5xl font-extrabold mb-10 text-teal-300">التزامنا بالتميز</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="glass-bg p-6 text-center transform hover:-translate-y-2 transition-transform duration-300">
+                    <div class="text-teal-300 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">جودة فائقة</h3>
+                    <p class="text-gray-300">منتجات عالية الجودة مرخصة تخضع لأشد معايير الفحص.</p>
+                </div>
+                <div class="glass-bg p-6 text-center transform hover:-translate-y-2 transition-transform duration-300">
+                     <div class="text-teal-300 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">تركيب احترافي</h3>
+                    <p class="text-gray-300">فريق من المهندسين والفنيين المعتمدين لتركيب دقيق وفعال.</p>
+                </div>
+                <div class="glass-bg p-6 text-center transform hover:-translate-y-2 transition-transform duration-300">
+                    <div class="text-teal-300 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">دعم فني مخصص</h3>
+                    <p class="text-gray-300">عقود صيانة استباقية وفريق دعم فني سريع الاستجابة.</p>
+                </div>
+                <div class="glass-bg p-6 text-center transform hover:-translate-y-2 transition-transform duration-300">
+                    <div class="text-teal-300 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m12 0a2 2 0 100-4m0 4a2 2 0 110-4m-6 0a2 2 0 100-4m0 4a2 2 0 110-4M6 12a2 2 0 100-4m0 4a2 2 0 110-4" /></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">حلول مخصصة</h3>
+                    <p class="text-gray-300">نصمم أنظمة تتوافق تمامًا مع متطلباتكم وميزانيتكم.</p>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-down"></div>
+    </section>
+
+     <!-- الشريحة 9: مستقبل الابتكار -->
+    <section class="slide bg-gray-800">
+        <div class="slide-content">
+            <h2 class="text-4xl md:text-5xl font-extrabold mb-10 text-teal-300">مستقبل الابتكار</h2>
+            <p class="text-xl text-gray-300 mb-12 max-w-4xl mx-auto">نلتزم بالبقاء في طليعة الابتكار التكنولوجي من خلال الاستثمار المستمر في البحث والتطوير لتقديم أنظمة أكثر ذكاءً وترابطًا.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center p-6 glass-bg transform hover:scale-105 transition-transform duration-300">
+                     <div class="text-teal-300 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">الذكاء الاصطناعي (AI)</h3>
+                    <p class="text-gray-300">لتعزيز التحليلات التنبؤية واتخاذ القرارات الذكية.</p>
+                </div>
+                 <div class="text-center p-6 glass-bg transform hover:scale-105 transition-transform duration-300">
+                    <div class="text-teal-300 mb-4">
+                       <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h8a2 2 0 002-2v-1a2 2 0 012-2h1.945M7.737 16.525l.868.868M15.396 16.525l.868-.868M12 21v-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">إنترنت الأشياء (IoT)</h3>
+                    <p class="text-gray-300">لإنشاء أنظمة بيئية مترابطة وأكثر كفاءة.</p>
+                </div>
+                <div class="text-center p-6 glass-bg transform hover:scale-105 transition-transform duration-300">
+                    <div class="text-teal-300 mb-4">
+                       <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" /></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">الحلول السحابية</h3>
+                    <p class="text-gray-300">لمرونة أكبر، تخزين آمن، وإدارة مركزية.</p>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-down"></div>
+    </section>
+
+    <!-- الشريحة 10: الخلاصة والدعوة للشراكة -->
+    <section class="slide animated-gradient">
+        <div class="slide-content text-center">
+            <h2 class="text-4xl md:text-5xl font-extrabold mb-6 text-teal-300">لماذا تختار مؤسسة بلاي فيلم؟</h2>
+            <p class="text-xl md:text-2xl text-gray-200 leading-relaxed max-w-4xl mx-auto mb-10">
+                لأننا لا نبيع منتجات، بل نصنع ثقة. مجموعتنا الشاملة من الحلول المبتكرة، المقترنة بالتزامنا الراسخ بالجودة، تجعلنا الشريك المثالي لتصميم مستقبل أكثر أمانًا وذكاءً وكفاءة.
+            </p>
+            <a href="#" class="inline-block bg-teal-400 text-gray-900 font-bold text-xl py-4 px-10 rounded-full hover:bg-teal-300 transform hover:scale-110 transition-all duration-300 shadow-lg">
+                لنتشارك في بناء الغد
+            </a>
+        </div>
+    </section>
+
+</body>
+</html>
