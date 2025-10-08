@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -19,7 +20,6 @@
         .bg-brand-dark-red { background-color: #8B0000; }
         .border-brand-dark-red { border-color: #8B0000; }
         .text-charcoal { color: #36454F; }
-        .bg-silver { background-color: #E5E4E2; }
         .section-title {
             font-size: 2.25rem;
             font-weight: 800;
@@ -154,7 +154,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Mandatory Tooltip Callback
             const tooltipTitleCallback = (tooltipItems) => {
                 const item = tooltipItems[0];
                 let label = item.chart.data.labels[item.dataIndex];
@@ -164,7 +163,6 @@
                 return label;
             };
 
-            // Chart 1: Market Sectors (Donut Chart)
             const marketCtx = document.getElementById('marketSectorsChart').getContext('2d');
             new Chart(marketCtx, {
                 type: 'doughnut',
@@ -189,21 +187,14 @@
                             }
                         },
                         tooltip: {
-                            callbacks: {
-                                title: tooltipTitleCallback
-                            },
-                             bodyFont: {
-                                fontFamily: 'Tajawal'
-                            },
-                            titleFont: {
-                                fontFamily: 'Tajawal'
-                            }
+                            callbacks: { title: tooltipTitleCallback },
+                             bodyFont: { fontFamily: 'Tajawal' },
+                            titleFont: { fontFamily: 'Tajawal' }
                         }
                     }
                 }
             });
 
-            // Chart 2: Commitment to Excellence (Radar Chart)
             const commitmentCtx = document.getElementById('commitmentChart').getContext('2d');
             new Chart(commitmentCtx, {
                 type: 'radar',
@@ -227,32 +218,16 @@
                         r: {
                             beginAtZero: true,
                             max: 100,
-                            ticks: {
-                                stepSize: 20,
-                                backdropColor: 'transparent'
-                            },
-                             pointLabels: {
-                                font: {
-                                    size: 11,
-                                    family: 'Tajawal'
-                                }
-                            }
+                            ticks: { stepSize: 20, backdropColor: 'transparent' },
+                             pointLabels: { font: { size: 11, family: 'Tajawal' } }
                         }
                     },
                     plugins: {
-                        legend: {
-                            display: false
-                        },
+                        legend: { display: false },
                          tooltip: {
-                            callbacks: {
-                                title: tooltipTitleCallback
-                            },
-                             bodyFont: {
-                                fontFamily: 'Tajawal'
-                            },
-                            titleFont: {
-                                fontFamily: 'Tajawal'
-                            }
+                            callbacks: { title: tooltipTitleCallback },
+                             bodyFont: { fontFamily: 'Tajawal' },
+                            titleFont: { fontFamily: 'Tajawal' }
                         }
                     }
                 }
