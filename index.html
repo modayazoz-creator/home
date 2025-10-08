@@ -3,388 +3,261 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مؤسسة بلاي فيلم للتجارة | ريادة الأمن الذكي والتقنيات المتقدمة</title>
+    <title>إنفوجرافيك مؤسسة بلاي فيلم للتجارة | ريادة الأمن الذكي</title>
     <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
     <script src="[https://cdn.jsdelivr.net/npm/chart.js](https://cdn.jsdelivr.net/npm/chart.js)"></script>
     <link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)">
     <link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
     <link href="[https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap](https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap)" rel="stylesheet">
-    <script type="module">
-        // Firebase SDK
-        import { initializeApp } from "[https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js](https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js)";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "[https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js](https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js)";
-        import { getFirestore, collection, onSnapshot, addDoc, doc, deleteDoc, setLogLevel } from "[https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js](https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js)";
-
-        // IMPORTANT: These are global variables that will be replaced by the execution environment.
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : { apiKey: "AIza...", authDomain: "...", projectId: "..." };
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        setLogLevel('debug');
-
-        let currentUserId = null;
-
-        onAuthStateChanged(auth, user => {
-            if (user) {
-                console.log("User is signed in with uid:", user.uid);
-                currentUserId = user.uid;
-                initializeAppLogic();
-            } else {
-                console.log("User is signed out. Signing in anonymously...");
-                signInAnonymously(auth).catch(error => {
-                    console.error("Anonymous sign-in failed:", error);
-                });
-            }
-        });
-
-        function initializeAppLogic() {
-            if (!currentUserId) {
-                console.error("Authentication not ready yet.");
-                return;
-            }
-
-            const projectsCollectionPath = `/artifacts/${appId}/public/data/projects`;
-            const projectsCollection = collection(db, projectsCollectionPath);
-            const projectsList = document.getElementById('projects-list');
-            const noProjectsMessage = document.getElementById('no-projects-message');
-            const adminPanel = document.getElementById('admin-panel');
-            const toggleAdminPanelButton = document.getElementById('toggle-admin-panel');
-            const addProjectForm = document.getElementById('add-project-form');
-
-            // Listen for real-time updates
-            onSnapshot(projectsCollection, (snapshot) => {
-                console.log(`Received ${snapshot.size} project(s) from Firestore.`);
-                projectsList.innerHTML = ''; // Clear current list
-                if (snapshot.empty) {
-                    noProjectsMessage.classList.remove('hidden');
-                } else {
-                    noProjectsMessage.classList.add('hidden');
-                    snapshot.forEach((doc) => {
-                        const project = doc.data();
-                        const projectElement = document.createElement('div');
-                        projectElement.className = 'bg-white p-4 rounded-lg shadow-sm border-l-4 border-gray-200 flex justify-between items-center';
-                        projectElement.innerHTML = `
-                            <div>
-                                <h4 class="font-bold text-gray-800">${project.name}</h4>
-                                <p class="text-sm text-gray-500">${project.sector} - <span class="font-semibold">${project.status}</span></p>
-                            </div>
-                            <button data-id="${doc.id}" class="delete-project-btn text-red-500 hover:text-red-700 text-xs">حذف</button>
-                        `;
-                        projectsList.appendChild(projectElement);
-                    });
-                }
-            }, (error) => {
-                console.error("Error fetching projects:", error);
-                projectsList.innerHTML = `<p class="text-red-500">حدث خطأ في تحميل المشاريع.</p>`;
-            });
-
-            // Toggle admin panel
-            toggleAdminPanelButton.addEventListener('click', () => {
-                adminPanel.classList.toggle('hidden');
-                toggleAdminPanelButton.textContent = adminPanel.classList.contains('hidden') ? 'إظهار لوحة التحكم الإدارية' : 'إخفاء لوحة التحكم';
-            });
-
-            // Add new project
-            addProjectForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const projectName = document.getElementById('project-name').value;
-                const projectSector = document.getElementById('project-sector').value;
-                const projectStatus = document.getElementById('project-status').value;
-
-                if (projectName && projectSector && projectStatus) {
-                    try {
-                        await addDoc(projectsCollection, {
-                            name: projectName,
-                            sector: projectSector,
-                            status: projectStatus,
-                            userId: currentUserId,
-                            createdAt: new Date()
-                        });
-                        console.log("Project added successfully.");
-                        addProjectForm.reset();
-                    } catch (error) {
-                        console.error("Error adding document: ", error);
-                        alert('حدث خطأ أثناء إضافة المشروع.');
-                    }
-                }
-            });
-            
-            // Delete project
-            projectsList.addEventListener('click', async (e) => {
-                if (e.target.classList.contains('delete-project-btn')) {
-                    const docId = e.target.dataset.id;
-                    if (confirm('هل أنت متأكد من حذف هذا المشروع؟')) {
-                        try {
-                            const docRef = doc(db, projectsCollectionPath, docId);
-                            await deleteDoc(docRef);
-                            console.log("Project deleted successfully.");
-                        } catch (error) {
-                            console.error("Error deleting document: ", error);
-                            alert('حدث خطأ أثناء حذف المشروع.');
-                        }
-                    }
-                }
-            });
-        }
-    </script>
     <style>
         body {
             font-family: 'Tajawal', sans-serif;
-            scroll-behavior: smooth;
+            background-color: #F5F5F5;
+            color: #36454F;
         }
-        .hero-bg {
-            background-color: #f8f9fa;
+        .brand-dark-red { color: #8B0000; }
+        .bg-brand-dark-red { background-color: #8B0000; }
+        .border-brand-dark-red { border-color: #8B0000; }
+        .text-charcoal { color: #36454F; }
+        .bg-silver { background-color: #E5E4E2; }
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
         }
-        .brand-color { color: #8B0000; }
-        .brand-bg { background-color: #8B0000; }
-        .brand-border { border-color: #8B0000; }
-        .card-hover { transition: all 0.3s ease-in-out; }
-        .card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: #5a6872;
+            max-width: 600px;
+            margin: 0 auto 3rem auto;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
         }
     </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body class="antialiased">
 
-    <!-- Header & Navigation -->
-    <header class="bg-white shadow-md sticky top-0 z-50">
-        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-4">
-                <img src="[https://storage.googleapis.com/gemini-prod/images/brandmark-design%20(2).png](https://storage.googleapis.com/gemini-prod/images/brandmark-design%20(2).png)" alt="شعار بلاي فيلم" class="h-12 w-12">
-                <h1 class="text-xl md:text-2xl font-bold brand-color">مؤسسة بلاي فيلم للتجارة</h1>
-            </div>
-            <div class="hidden md:flex items-center space-x-8 space-x-reverse">
-                <a href="#about" class="text-gray-600 hover:brand-color transition">من نحن</a>
-                <a href="#solutions" class="text-gray-600 hover:brand-color transition">حلولنا</a>
-                <a href="#partners" class="text-gray-600 hover:brand-color transition">شركاء النجاح</a>
-                <a href="#credentials" class="text-gray-600 hover:brand-color transition">الموثوقية</a>
-                <a href="#contact" class="brand-bg text-white px-4 py-2 rounded-md hover:opacity-90 transition">تواصل معنا</a>
-            </div>
-             <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-            </button>
-        </nav>
-        <div id="mobile-menu" class="hidden md:hidden bg-white">
-            <a href="#about" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-200">من نحن</a>
-            <a href="#solutions" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-200">حلولنا</a>
-            <a href="#partners" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-200">شركاء النجاح</a>
-            <a href="#credentials" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-200">الموثوقية</a>
-            <a href="#contact" class="block py-2 px-4 text-sm brand-bg text-white text-center">تواصل معنا</a>
-        </div>
-    </header>
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
 
-    <main>
-        <!-- Hero Section -->
-        <section class="hero-bg py-20 md:py-32">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-3xl md:text-5xl font-extrabold text-gray-900 mb-4 leading-tight">ريادة الأمن الذكي لتمكين مستقبل المملكة</h2>
-                <p class="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">نصمم وننفذ حلولاً تقنية متقدمة تتوافق مع رؤية 2030، لتعزيز الأمان والكفاءة في جميع القطاعات.</p>
-                <a href="#solutions" class="mt-8 inline-block brand-bg text-white font-bold px-8 py-3 rounded-lg shadow-lg hover:opacity-90 transition transform hover:scale-105">استكشف حلولنا</a>
+        <!-- Header Section -->
+        <header class="text-center my-8 md:my-12">
+            <img src="[https://storage.googleapis.com/gemini-prod/images/brandmark-design%20(2).png](https://storage.googleapis.com/gemini-prod/images/brandmark-design%20(2).png)" alt="شعار بلاي فيلم" class="h-20 w-20 mx-auto mb-4">
+            <h1 class="text-4xl md:text-5xl font-extrabold brand-dark-red">مؤسسة بلاي فيلم للتجارة</h1>
+            <p class="text-xl md:text-2xl text-charcoal mt-2">ريادة الأمن الذكي لتمكين مستقبل المملكة</p>
+        </header>
+
+        <!-- Introduction Section -->
+        <section class="bg-white p-8 rounded-xl shadow-lg text-center mb-12">
+            <h2 class="section-title text-charcoal">شريكك الاستراتيجي في التحول التقني</h2>
+            <p class="section-subtitle">نحن كيان سعودي رائد، متخصصون في تصميم وتوطين حلول الأمن الذكي وتقنيات التيار الخفيف، مع التزام مطلق بالتوافق مع أهداف <strong>رؤية المملكة 2030</strong>.</p>
+        </section>
+
+        <!-- Solutions Section -->
+        <section class="my-12">
+            <div class="text-center">
+                <h2 class="section-title brand-dark-red">محفظة حلولنا المتكاملة</h2>
+                <p class="section-subtitle">نقدم منظومة شاملة من الخدمات المتقدمة لضمان أعلى مستويات الأمان والكفاءة التشغيلية.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center transition transform hover:-translate-y-2">
+                    <span class="text-5xl">📹</span>
+                    <h3 class="font-bold text-xl my-3">المراقبة المتقدمة</h3>
+                    <p class="text-sm text-gray-600">كاميرات 4K/8K معززة بالذكاء الاصطناعي للكشف الاستباقي عن التهديدات.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center transition transform hover:-translate-y-2">
+                    <span class="text-5xl">🔒</span>
+                    <h3 class="font-bold text-xl my-3">التحكم الذكي بالدخول</h3>
+                    <p class="text-sm text-gray-600">أنظمة بيومترية (بصمة ووجه) وأقفال ذكية لإدارة وصول آمنة وفعالة.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center transition transform hover:-translate-y-2">
+                    <span class="text-5xl">📞</span>
+                    <h3 class="font-bold text-xl my-3">الاتصالات والصوتيات</h3>
+                    <p class="text-sm text-gray-600">سنترالات VoIP حديثة وأنظمة صوت احترافية للمرافق العامة والخاصة.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center transition transform hover:-translate-y-2">
+                    <span class="text-5xl">💡</span>
+                    <h3 class="font-bold text-xl my-3">المباني الذكية</h3>
+                    <p class="text-sm text-gray-600">تحكم متكامل في الإضاءة والتكييف لتعزيز الراحة وكفاءة الطاقة.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center transition transform hover:-translate-y-2">
+                    <span class="text-5xl">☀️</span>
+                    <h3 class="font-bold text-xl my-3">حلول الطاقة المتجددة</h3>
+                    <p class="text-sm text-gray-600">ألواح شمسية ومولدات لضمان استمرارية التشغيل وتقليل التكاليف.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center transition transform hover:-translate-y-2">
+                    <span class="text-5xl">🌐</span>
+                    <h3 class="font-bold text-xl my-3">البنية التحتية للشبكات</h3>
+                    <p class="text-sm text-gray-600">تصميم وتنفيذ شبكات بيانات قوية لدعم جميع الأنظمة الذكية.</p>
+                </div>
             </div>
         </section>
 
-        <!-- About Us Section -->
-        <section id="about" class="py-16 bg-white">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h3 class="text-3xl font-bold brand-color mb-2">شريكك الموثوق للأمان والتقنية</h3>
-                    <p class="text-gray-600 max-w-2xl mx-auto">مؤسسة سعودية رائدة، نجمع بين الخبرة العميقة والتقنيات المبتكرة لتقديم بنية تحتية آمنة وفعالة تدعم أهداف عملائنا الاستراتيجية.</p>
+        <!-- Data Visualization Section -->
+        <section class="my-12 grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Market Sectors Chart -->
+            <div class="bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="section-title text-charcoal text-center">القطاعات التي نخدمها</h2>
+                <p class="section-subtitle">حلولنا مصممة لتلبية المتطلبات الفريدة لمختلف القطاعات الحيوية في المملكة.</p>
+                <div class="chart-container h-72 md:h-80">
+                    <canvas id="marketSectorsChart"></canvas>
                 </div>
-                <div class="chart-container relative w-full max-w-3xl mx-auto h-80 md:h-96">
-                     <canvas id="excellenceChart"></canvas>
-                </div>
-                 <p class="text-center mt-4 text-gray-500 text-sm">رسم بياني يوضح ركائز التميز لدينا</p>
             </div>
-        </section>
 
-        <!-- Solutions Portfolio Section -->
-        <section id="solutions" class="py-16 bg-gray-50">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h3 class="text-3xl font-bold brand-color mb-2">حلولنا الذكية بالصور</h3>
-                    <p class="text-gray-600 max-w-2xl mx-auto">كتالوج مرئي يعرض محفظة حلولنا المتكاملة والمصممة لتلبية الاحتياجات الأمنية والتشغيلية الأكثر تطلبًا.</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Card 1: Surveillance -->
-                    <div class="bg-white p-6 rounded-lg shadow-md card-hover">
-                        <img src="[https://images.pexels.com/photos/220327/pexels-photo-220327.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1](https://images.pexels.com/photos/220327/pexels-photo-220327.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)" alt="كاميرات مراقبة" class="w-full h-40 object-cover rounded-md mb-4">
-                        <h4 class="font-bold text-xl mb-2">المراقبة المتقدمة</h4>
-                        <p class="text-gray-600 text-sm">أنظمة مراقبة 8K مدعومة بالذكاء الاصطناعي، مع أجهزة تتبع الحركة والكشف الاستباقي للتهديدات لضمان أقصى درجات الحماية.</p>
-                    </div>
-                    <!-- Card 2: Access Control -->
-                    <div class="bg-white p-6 rounded-lg shadow-md card-hover">
-                        <img src="[https://images.pexels.com/photos/5969689/pexels-photo-5969689.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1](https://images.pexels.com/photos/5969689/pexels-photo-5969689.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)" alt="نظام بصمة" class="w-full h-40 object-cover rounded-md mb-4">
-                        <h4 class="font-bold text-xl mb-2">التحكم الذكي بالدخول</h4>
-                        <p class="text-gray-600 text-sm">إدارة وتأمين نقاط الدخول بدقة وكفاءة باستخدام التقنيات البيومترية (بصمة الوجه والأصبع) والأقفال الذكية.</p>
-                    </div>
-                    <!-- Card 3: Communications -->
-                    <div class="bg-white p-6 rounded-lg shadow-md card-hover">
-                        <img src="[https://images.pexels.com/photos/8112173/pexels-photo-8112173.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1](https://images.pexels.com/photos/8112173/pexels-photo-8112173.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)" alt="اجتماع عمل" class="w-full h-40 object-cover rounded-md mb-4">
-                        <h4 class="font-bold text-xl mb-2">الاتصالات والصوتيات</h4>
-                        <p class="text-gray-600 text-sm">بنية تحتية متكاملة للاتصالات (VoIP) وأنظمة صوت احترافية عالية الدقة للمساجد وقاعات الاجتماعات.</p>
-                    </div>
-                    <!-- Card 4: Smart Buildings -->
-                    <div class="bg-white p-6 rounded-lg shadow-md card-hover">
-                        <img src="[https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1](https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)" alt="منزل ذكي" class="w-full h-40 object-cover rounded-md mb-4">
-                        <h4 class="font-bold text-xl mb-2">المباني الذكية</h4>
-                        <p class="text-gray-600 text-sm">تحكم شامل في بيئة المبنى (إضاءة، تكييف) لتعزيز الراحة وكفاءة استهلاك الطاقة بنسبة تصل إلى 30%.</p>
-                    </div>
-                    <!-- Card 5: Energy Solutions -->
-                     <div class="bg-white p-6 rounded-lg shadow-md card-hover">
-                        <img src="[https://images.pexels.com/photos/433308/pexels-photo-433308.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1](https://images.pexels.com/photos/433308/pexels-photo-433308.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)" alt="ألواح شمسية" class="w-full h-40 object-cover rounded-md mb-4">
-                        <h4 class="font-bold text-xl mb-2">حلول الطاقة المتخصصة</h4>
-                        <p class="text-gray-600 text-sm">مصادر طاقة مستدامة ومستقلة (ألواح شمسية، مولدات) لضمان استمرارية التشغيل بنسبة موثوقية 99.9%.</p>
-                    </div>
-                    <!-- Card 6: Infrastructure -->
-                     <div class="bg-white p-6 rounded-lg shadow-md card-hover">
-                        <img src="[https://images.pexels.com/photos/5926382/pexels-photo-5926382.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1](https://images.pexels.com/photos/5926382/pexels-photo-5926382.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)" alt="شبكات" class="w-full h-40 object-cover rounded-md mb-4">
-                        <h4 class="font-bold text-xl mb-2">البنية التحتية للشبكات</h4>
-                        <p class="text-gray-600 text-sm">تصميم وتنفيذ شبكات بيانات قوية ومستقرة لدعم جميع الأنظمة الذكية والعمليات الرقمية بكفاءة عالية.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Partners Section (Dynamic) -->
-        <section id="partners" class="py-16 bg-white">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h3 class="text-3xl font-bold brand-color mb-2">شركاء النجاح</h3>
-                    <p class="text-gray-600 max-w-2xl mx-auto">قائمة متجددة بأبرز المشاريع التي نفذتها المؤسسة، والتي تعكس ثقة عملائنا في مختلف القطاعات.</p>
-                </div>
-                <div class="max-w-4xl mx-auto bg-gray-50 p-6 rounded-lg">
-                    <div id="projects-list" class="space-y-3">
-                        <!-- Projects will be loaded here from Firestore -->
-                    </div>
-                    <p id="no-projects-message" class="text-center text-gray-500 hidden">لا توجد مشاريع مضافة حالياً.</p>
-                </div>
-                
-                <!-- Admin Control Panel -->
-                <div class="text-center mt-8">
-                    <button id="toggle-admin-panel" class="text-sm text-blue-600 hover:underline">إظهار لوحة التحكم الإدارية</button>
-                    <div id="admin-panel" class="hidden max-w-xl mx-auto mt-4 p-4 bg-gray-200 rounded-lg text-right">
-                        <h4 class="font-bold mb-2">إضافة مشروع جديد</h4>
-                        <form id="add-project-form" class="space-y-3">
-                            <input type="text" id="project-name" placeholder="اسم المشروع" class="w-full p-2 border rounded" required>
-                            <input type="text" id="project-sector" placeholder="القطاع" class="w-full p-2 border rounded" required>
-                            <input type="text" id="project-status" placeholder="حالة المشروع" class="w-full p-2 border rounded" required>
-                            <button type="submit" class="brand-bg text-white px-4 py-2 rounded hover:opacity-90">إضافة المشروع</button>
-                        </form>
-                    </div>
+            <!-- Commitment Chart -->
+            <div class="bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="section-title text-charcoal text-center">التزامنا بالتميز</h2>
+                <p class="section-subtitle">نضمن أعلى مستويات الأداء في جميع جوانب خدماتنا، من جودة المنتج إلى الدعم الفني.</p>
+                <div class="chart-container h-72 md:h-80">
+                    <canvas id="commitmentChart"></canvas>
                 </div>
             </div>
         </section>
 
         <!-- Credentials Section -->
-        <section id="credentials" class="py-16 bg-gray-50">
-            <div class="container mx-auto px-6">
-                 <div class="text-center mb-12">
-                    <h3 class="text-3xl font-bold brand-color mb-2">الموثوقية والاعتماد الرسمي</h3>
-                    <p class="text-gray-600 max-w-2xl mx-auto">نعمل بشفافية والتزام كاملين. مؤسستنا مسجلة ومعتمدة لدى الجهات الرسمية في المملكة العربية السعودية.</p>
-                </div>
-                <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg border-r-4 brand-border">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div>
-                            <h4 class="font-bold text-xl mb-3 text-gray-800">السجل التجاري</h4>
-                            <p class="text-gray-600"><strong>الرقم:</strong> <span class="font-mono">1010829876</span></p>
-                            <p class="text-gray-600"><strong>المركز الرئيسي الرسمي:</strong> الرياض، حي جرير</p>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-xl mb-3 text-gray-800">شهادة الزكاة والضريبة والجمارك</h4>
-                            <p class="text-gray-600"><strong>الرقم المميز:</strong> <span class="font-mono">3114196844</span></p>
-                        </div>
+        <section class="my-12 text-center">
+            <h2 class="section-title brand-dark-red">الموثوقية والاعتماد الرسمي</h2>
+            <p class="section-subtitle">نعمل بشفافية والتزام كاملين. مؤسستنا مسجلة ومعتمدة لدى الجهات الرسمية في المملكة.</p>
+            <div class="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-lg border-t-8 border-brand-dark-red">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="font-bold text-lg">السجل التجاري</h3>
+                        <p class="font-mono text-xl text-charcoal">1010829876</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg">شهادة الزكاة والضريبة</h3>
+                        <p class="font-mono text-xl text-charcoal">3114196844</p>
                     </div>
                 </div>
+                <p class="text-xs text-gray-500 mt-6">البيانات المعروضة تستند إلى الوثائق الرسمية المقدمة ويمكن التحقق منها عبر المنصات الحكومية.</p>
             </div>
         </section>
 
-    </main>
-    
-    <!-- Footer -->
-    <footer id="contact" class="bg-gray-800 text-white pt-12 pb-6">
-        <div class="container mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-right">
-                <div>
-                    <h4 class="font-bold text-lg mb-4">مؤسسة بلاي فيلم للتجارة</h4>
-                    <p class="text-gray-400 text-sm">شريككم الاستراتيجي نحو مستقبل آمن وذكي. ملتزمون بتقديم أعلى معايير الجودة والابتكار.</p>
-                </div>
-                <div>
-                     <h4 class="font-bold text-lg mb-4">روابط سريعة</h4>
-                     <ul class="space-y-2">
-                         <li><a href="#about" class="text-gray-400 hover:text-white transition">من نحن</a></li>
-                         <li><a href="#solutions" class="text-gray-400 hover:text-white transition">حلولنا</a></li>
-                         <li><a href="#partners" class="text-gray-400 hover:text-white transition">شركاء النجاح</a></li>
-                     </ul>
-                </div>
-                <div>
-                    <h4 class="font-bold text-lg mb-4">تواصل معنا</h4>
-                    <p class="text-gray-400 text-sm mb-2"><strong>الموقع التشغيلي:</strong><br>مكة المكرمة - حي النسيم</p>
-                    <p class="text-gray-400 text-sm">للاستفسارات والمشاريع، يرجى التواصل عبر القنوات الرسمية.</p>
-                </div>
-            </div>
-            <div class="mt-10 border-t border-gray-700 pt-6 text-center text-gray-500 text-sm">
-                <p>&copy; 2025 playfilm-ksa.com. جميع الحقوق محفوظة.</p>
-            </div>
-        </div>
-    </footer>
-    
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Mobile Menu
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-        
-        // Close mobile menu when a link is clicked
-        document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
-        });
+        <!-- Footer -->
+        <footer class="text-center mt-12 py-6 border-t">
+            <p class="text-charcoal font-bold">تواصلوا معنا لمستقبل أكثر أمانًا وذكاءً.</p>
+            <p class="text-sm text-gray-500 mt-2">&copy; 2025 مؤسسة بلاي فيلم للتجارة. جميع الحقوق محفوظة.</p>
+        </footer>
 
-        // Chart.js - Pillars of Excellence
-        const ctx = document.getElementById('excellenceChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['الجودة الفائقة', 'الخبرة الفنية', 'الدعم المستمر', 'الحلول المخصصة'],
-                datasets: [{
-                    label: 'مستوى الالتزام',
-                    data: [98, 95, 96, 99],
-                    backgroundColor: 'rgba(139, 0, 0, 0.7)',
-                    borderColor: 'rgba(139, 0, 0, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100,
-                        ticks: { callback: value => value + '%' }
-                    }
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mandatory Tooltip Callback
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                }
+                return label;
+            };
+
+            // Chart 1: Market Sectors (Donut Chart)
+            const marketCtx = document.getElementById('marketSectorsChart').getContext('2d');
+            new Chart(marketCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['الحكومي والعام', 'الصناعي والمشاريع الكبرى', 'التجاري والتجزئة', 'السكني'],
+                    datasets: [{
+                        data: [40, 30, 20, 10],
+                        backgroundColor: ['#8B0000', '#36454F', '#A9A9A9', '#E5E4E2'],
+                        borderColor: '#FFFFFF',
+                        borderWidth: 3,
+                    }]
                 },
-                plugins: {
-                    legend: { display: false },
-                    tooltip: { callbacks: { label: context => `${context.dataset.label}: ${context.parsed.y}%` } },
-                    title: {
-                        display: true,
-                        text: 'ركائز التميز في مؤسسة بلاي فيلم',
-                        font: { size: 16, family: 'Tajawal' },
-                        padding: { top: 10, bottom: 20 }
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                fontFamily: 'Tajawal',
+                                font: { size: 12 }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback
+                            },
+                             bodyFont: {
+                                fontFamily: 'Tajawal'
+                            },
+                            titleFont: {
+                                fontFamily: 'Tajawal'
+                            }
+                        }
                     }
                 }
-            }
+            });
+
+            // Chart 2: Commitment to Excellence (Radar Chart)
+            const commitmentCtx = document.getElementById('commitmentChart').getContext('2d');
+            new Chart(commitmentCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['جودة المنتجات', 'التركيب الاحترافي', ['الدعم الفني', 'والصيانة'], 'الحلول المخصصة', 'التوافق مع الرؤية'],
+                    datasets: [{
+                        label: 'مستوى الالتزام',
+                        data: [98, 95, 96, 99, 100],
+                        backgroundColor: 'rgba(139, 0, 0, 0.2)',
+                        borderColor: '#8B0000',
+                        pointBackgroundColor: '#8B0000',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#8B0000'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                stepSize: 20,
+                                backdropColor: 'transparent'
+                            },
+                             pointLabels: {
+                                font: {
+                                    size: 11,
+                                    family: 'Tajawal'
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                         tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback
+                            },
+                             bodyFont: {
+                                fontFamily: 'Tajawal'
+                            },
+                            titleFont: {
+                                fontFamily: 'Tajawal'
+                            }
+                        }
+                    }
+                }
+            });
         });
-    });
     </script>
 </body>
 </html>
