@@ -940,3 +940,416 @@ I. الملخص التنفيذي: الابتكار من أجل مستقبل آم
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مؤسسة بلاي فيلم للتجارة | حلول تقنية متقدمة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals with Muted Blue Accent -->
+    <!-- Application Structure Plan: A thematic, single-page dashboard structure is chosen over a linear document format to enhance user engagement and allow for quick access to specific information. The flow is designed to first establish credibility (Vision 2030, Market Growth), then detail the core offerings (Interactive Solutions), provide evidence of impact (Market Data Chart), explain the process (Methodology), and finally call to action. This non-linear exploration path is better for potential clients who may be interested in different aspects of the business. -->
+    <!-- Visualization & Content Choices: 
+        - Market Growth Stats -> Inform -> Animated Counters -> On Scroll Animation -> Highlights impressive growth quickly -> JS.
+        - Solutions Portfolio -> Organize/Explore -> Interactive Tabbed Cards -> Click to reveal details -> Prevents information overload, encourages user interaction -> JS.
+        - Surveillance Penetration -> Compare -> Horizontal Bar Chart -> Hover Tooltips -> More engaging and easier to compare values than a table -> Chart.js (Canvas).
+        - Methodology -> Organize -> Styled Process Flow Cards -> Hover Effects -> Visually represents a multi-step process clearly -> HTML/Tailwind CSS.
+        - Geographic Presence -> Inform -> Simple Icon + Text Layout -> Clear and concise representation -> HTML/Tailwind CSS.
+     -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .tajawal-bold { font-weight: 700; }
+        .tajawal-medium { font-weight: 500; }
+        .tajawal-regular { font-weight: 400; }
+        .active-tab {
+            border-color: #3b82f6 !important;
+            color: #3b82f6 !important;
+            background-color: #eff6ff;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <header id="header" class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-50 transition-all duration-300">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-slate-900 tajawal-bold">بلاي فيلم للتجارة</h1>
+            <div class="hidden md:flex space-x-8 space-x-reverse text-lg">
+                <a href="#home" class="text-slate-600 hover:text-blue-600 transition-colors">الرئيسية</a>
+                <a href="#solutions" class="text-slate-600 hover:text-blue-600 transition-colors">حلولنا</a>
+                <a href="#market" class="text-slate-600 hover:text-blue-600 transition-colors">بصمتنا في السوق</a>
+                <a href="#methodology" class="text-slate-600 hover:text-blue-600 transition-colors">منهجيتنا</a>
+                <a href="#contact" class="text-slate-600 hover:text-blue-600 transition-colors">تواصل معنا</a>
+            </div>
+             <div class="md:hidden">
+                <select id="mobile-nav" class="border border-gray-300 rounded-md p-2 bg-white">
+                    <option value="#home">الرئيسية</option>
+                    <option value="#solutions">حلولنا</option>
+                    <option value="#market">بصمتنا في السوق</option>
+                    <option value="#methodology">منهجيتنا</option>
+                    <option value="#contact">تواصل معنا</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="py-20 bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl md:text-6xl font-extrabold text-slate-900 tajawal-bold mb-4">ريادة الحلول التقنية المتقدمة</h2>
+                <p class="text-lg md:text-xl text-slate-600 tajawal-medium max-w-3xl mx-auto mb-6">ندعم رؤية المملكة 2030 عبر تصميم ونشر وصيانة حلول الأمن الذكي وتقنيات التيار الخفيف كشريككم الاستراتيجي في عصر التحول الرقمي.</p>
+                <p class="text-2xl md:text-3xl font-bold text-blue-600 tajawal-bold">"شريككم الموثوق للأمان والتقنية في المملكة!"</p>
+            </div>
+            <div id="stats" class="container mx-auto px-6 pt-16 grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
+                <div class="bg-slate-50 p-8 rounded-xl shadow-md">
+                    <h3 class="text-2xl text-slate-700 tajawal-bold mb-3">نمو سوق تقنية المعلومات والتقنيات الناشئة</h3>
+                    <p class="text-5xl font-bold text-blue-600 tajawal-bold"><span class="stat-number" data-target="103">0</span> مليار ريال</p>
+                    <p class="text-slate-500 mt-2">المتوقع بحلول عام 2025</p>
+                </div>
+                <div class="bg-slate-50 p-8 rounded-xl shadow-md">
+                    <h3 class="text-2xl text-slate-700 tajawal-bold mb-3">نمو سوق الأمن السيبراني في المملكة</h3>
+                    <p class="text-5xl font-bold text-blue-600 tajawal-bold">$<span class="stat-number" data-target="3.67">0</span> مليار</p>
+                    <p class="text-slate-500 mt-2">المتوقع بحلول عام 2029</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="solutions" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-slate-900 tajawal-bold">محفظة حلولنا المتكاملة</h2>
+                    <p class="text-lg text-slate-600 max-w-2xl mx-auto mt-4">نصمم أنظمة مترابطة تخلق بيئات أكثر كفاءة وأمانًا وراحة. اضغط على أي فئة لاستكشاف حلولنا بالتفصيل.</p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+                    <button class="solution-tab p-4 border-b-4 border-slate-200 text-slate-600 text-center font-bold transition-all duration-300 hover:bg-blue-50 active-tab" data-target="monitoring">
+                        <span class="text-4xl mb-2 block">👁️</span>المراقبة والأمن
+                    </button>
+                    <button class="solution-tab p-4 border-b-4 border-slate-200 text-slate-600 text-center font-bold transition-all duration-300 hover:bg-blue-50" data-target="access">
+                        <span class="text-4xl mb-2 block">🔑</span>التحكم بالدخول
+                    </button>
+                    <button class="solution-tab p-4 border-b-4 border-slate-200 text-slate-600 text-center font-bold transition-all duration-300 hover:bg-blue-50" data-target="comms">
+                        <span class="text-4xl mb-2 block">📞</span>الاتصالات والصوتيات
+                    </button>
+                    <button class="solution-tab p-4 border-b-4 border-slate-200 text-slate-600 text-center font-bold transition-all duration-300 hover:bg-blue-50" data-target="smart">
+                        <span class="text-4xl mb-2 block">🏢</span>المباني الذكية
+                    </button>
+                    <button class="solution-tab p-4 border-b-4 border-slate-200 text-slate-600 text-center font-bold transition-all duration-300 hover:bg-blue-50" data-target="energy">
+                        <span class="text-4xl mb-2 block">☀️</span>الطاقة المتجددة
+                    </button>
+                </div>
+                <div id="solutions-content" class="bg-white p-8 rounded-xl shadow-lg min-h-[300px]">
+                    <!-- Content will be injected by JS -->
+                </div>
+            </div>
+        </section>
+        
+        <section id="market" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-slate-900 tajawal-bold">بصمتنا في السوق السعودي</h2>
+                    <p class="text-lg text-slate-600 max-w-3xl mx-auto mt-4">نخدم القطاعين الخاص والحكومي بخبرة عميقة وتأثير واسع، مع تواجد استراتيجي في المدن الرئيسية لضمان سرعة الاستجابة وكفاءة التنفيذ.</p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-center tajawal-bold">نسبة انتشار حلول المراقبة في القطاعات الرئيسية</h3>
+                         <div class="chart-container">
+                            <canvas id="penetrationChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-6 text-center tajawal-bold">خدمة شرائح متنوعة من السوق</h3>
+                        <div class="space-y-4">
+                            <div class="bg-slate-50 p-4 rounded-lg flex items-start space-x-4 space-x-reverse">
+                                <div class="text-blue-500 text-2xl mt-1">🏠</div>
+                                <div><strong class="font-bold">السكني:</strong> أمن وأتمتة المنازل الذكية لراحة البال.</div>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-lg flex items-start space-x-4 space-x-reverse">
+                                <div class="text-blue-500 text-2xl mt-1">🏬</div>
+                                <div><strong class="font-bold">التجاري والتجزئة:</strong> حماية الأصول ورفع كفاءة الأعمال.</div>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-lg flex items-start space-x-4 space-x-reverse">
+                                <div class="text-blue-500 text-2xl mt-1">🏭</div>
+                                <div><strong class="font-bold">الصناعي والمشاريع الكبرى:</strong> مراقبة شاملة وتحكم آمن في المواقع.</div>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-lg flex items-start space-x-4 space-x-reverse">
+                                <div class="text-blue-500 text-2xl mt-1">🏨</div>
+                                <div><strong class="font-bold">الضيافة:</strong> ضمان سلامة النزلاء والكفاءة التشغيلية.</div>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-lg flex items-start space-x-4 space-x-reverse">
+                                <div class="text-blue-500 text-2xl mt-1">🏛️</div>
+                                <div><strong class="font-bold">الحكومي:</strong> بنية تحتية آمنة ومتوافقة مع رؤية 2030.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="methodology" class="py-20">
+            <div class="container mx-auto px-6">
+                 <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-slate-900 tajawal-bold">منهجيتنا: الالتزام بالتميز</h2>
+                    <p class="text-lg text-slate-600 max-w-3xl mx-auto mt-4">قوتنا لا تكمن في جودة منتجاتنا فحسب، بل في فلسفة خدمتنا الشاملة التي تضمن شراكة حقيقية ومستدامة من التصميم إلى الدعم.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="bg-white p-6 rounded-xl shadow-lg text-center transition-transform hover:scale-105">
+                        <div class="text-5xl text-blue-600 mb-4">🏆</div>
+                        <h3 class="text-xl font-bold mb-2 tajawal-bold">جودة فائقة</h3>
+                        <p class="text-slate-600">نلتزم بتقديم منتجات عالية الجودة من أفضل الموردين العالميين، مع تطبيق أفضل الممارسات الصناعية.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg text-center transition-transform hover:scale-105">
+                        <div class="text-5xl text-blue-600 mb-4">🛠️</div>
+                        <h3 class="text-xl font-bold mb-2 tajawal-bold">تركيب احترافي</h3>
+                        <p class="text-slate-600">فريقنا من المهندسين والفنيين المعتمدين يضمن التركيب الدقيق والفعال للأنظمة.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg text-center transition-transform hover:scale-105">
+                        <div class="text-5xl text-blue-600 mb-4">⚙️</div>
+                        <h3 class="text-xl font-bold mb-2 tajawal-bold">صيانة استباقية</h3>
+                        <p class="text-slate-600">نقدم عقود صيانة شاملة ومراقبة مستمرة لتجنب الأعطال قبل حدوثها.</p>
+                    </div>
+                     <div class="bg-white p-6 rounded-xl shadow-lg text-center transition-transform hover:scale-105">
+                        <div class="text-5xl text-blue-600 mb-4">🎨</div>
+                        <h3 class="text-xl font-bold mb-2 tajawal-bold">حلول مخصصة</h3>
+                        <p class="text-slate-600">نصمم وننفذ أنظمة تتوافق تمامًا مع متطلبات عملائنا التشغيلية والمستقبلية.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="future" class="py-20 bg-blue-600 text-white">
+             <div class="container mx-auto px-6 text-center">
+                 <h2 class="text-4xl font-bold tajawal-bold mb-4">رؤية المستقبل: الابتكار المستمر</h2>
+                 <p class="text-lg opacity-90 max-w-3xl mx-auto mb-8">نستثمر في التقنيات الناشئة لتقديم أنظمة أكثر ذكاءً وتنبؤًا وترابطًا، مما يؤهل عملائنا لمواجهة تحديات المستقبل.</p>
+                 <div class="flex justify-center items-center space-x-8 space-x-reverse">
+                     <div class="text-center">
+                         <div class="text-5xl">🤖</div>
+                         <p class="mt-2 font-bold">الذكاء الاصطناعي</p>
+                     </div>
+                     <div class="text-center">
+                         <div class="text-5xl">🌐</div>
+                         <p class="mt-2 font-bold">إنترنت الأشياء</p>
+                     </div>
+                     <div class="text-center">
+                         <div class="text-5xl">☁️</div>
+                         <p class="mt-2 font-bold">الحلول السحابية</p>
+                     </div>
+                 </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer id="contact" class="bg-slate-800 text-slate-300 py-16">
+        <div class="container mx-auto px-6 text-center">
+             <h2 class="text-3xl font-bold text-white tajawal-bold mb-4">شراكة نحو غدٍ أكثر أمانًا وذكاءً</h2>
+             <p class="max-w-2xl mx-auto mb-8">نحن لا نقدم التقنية فحسب، بل نبني شراكات استراتيجية. ندعوكم للتواصل معنا لنصمم معًا مستقبل عملياتكم.</p>
+             <div class="max-w-4xl mx-auto bg-slate-700 p-6 rounded-lg text-right">
+                 <h3 class="text-xl font-bold text-white mb-4 tajawal-bold">المعلومات المؤسسية</h3>
+                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                     <p><strong>الاسم الرسمي:</strong> مؤسسة بلاي فيلم للتجارة</p>
+                     <p><strong>السجل التجاري:</strong> ١٠١٠٨٢٩٨٧٦</p>
+                     <p><strong>الرقم المميز (الزكاة والضريبة):</strong> ٣١١٤١٩٦٨٤٤</p>
+                     <p><strong>الرقم الوطني الموحد:</strong> ٧٠٣١٠٤٥١٤٤</p>
+                     <p><strong>المقر الرئيسي:</strong> الرياض، المملكة العربية السعودية</p>
+                     <p><strong>الفروع التشغيلية:</strong> جدة، مكة المكرمة</p>
+                 </div>
+             </div>
+             <p class="mt-8 text-slate-400">&copy; 2025 مؤسسة بلاي فيلم للتجارة. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const solutionsData = {
+        monitoring: {
+            title: 'أنظمة المراقبة المتقدمة والأمن المتكامل',
+            subtitle: 'تحويل المراقبة من رد فعل إلى حماية استباقية',
+            points: [
+                '<strong>تقنيات تصوير فائقة الدقة (4K/8K):</strong> وضوح استثنائي للتفاصيل الحيوية وتغطية شاملة.',
+                '<strong>تحليلات مدعومة بالذكاء الاصطناعي (AI):</strong> كشف استباقي للتهديدات عبر تحليل الأنماط السلوكية.',
+                '<strong>قدرات الرؤية الليلية الفائقة:</strong> مراقبة فعالة على مدار الساعة حتى في الظلام الدامس.',
+                '<strong>أنظمة إنذار متكاملة:</strong> استجابة سريعة للسرقة والحرائق لحماية الأرواح والممتلكات.'
+            ]
+        },
+        access: {
+            title: 'التحكم الذكي بالدخول وإدارة الوقت',
+            subtitle: 'تعزيز الأمان والكفاءة التشغيلية',
+            points: [
+                '<strong>حلول الوصول الشاملة:</strong> بوابات إلكترونية، مصادقة بيومترية، وأقفال ذكية للتحكم الدقيق.',
+                '<strong>أنظمة الحضور والانصراف المؤتمتة:</strong> تبسيط إدارة القوى العاملة وتسهيل عمليات الرواتب.'
+            ]
+        },
+        comms: {
+            title: 'حلول الاتصالات الحديثة والصوتيات الاحترافية',
+            subtitle: 'ضمان اتصال سلس وتجارب صوتية غامرة',
+            points: [
+                '<strong>أنظمة سنترال VoIP المتكاملة:</strong> اتصال داخلي وخارجي فعال بتكاليف أقل ومرونة أعلى.',
+                '<strong>أنظمة صوتيات احترافية عالية الدقة:</strong> تجربة صوتية غامرة وواضحة لقاعات الاجتماعات والمساجد والمسارح.'
+            ]
+        },
+        smart: {
+            title: 'تقنيات المباني والبنية التحتية الذكية',
+            subtitle: 'خلق بيئات مترابطة ومستدامة',
+            points: [
+                '<strong>التحكم الشامل في المباني الذكية:</strong> إدارة الإضاءة والتكييف والأجهزة عبر تطبيق واحد لتعزيز الراحة وكفاءة الطاقة.',
+                '<strong>مكونات البنية التحتية الأساسية:</strong> حلول شبكات قوية، شاشات LED، أنظمة درايف ثرو، وإنتركم موثوق.'
+            ]
+        },
+        energy: {
+            title: 'عروض متخصصة: حلول الطاقة المتجددة',
+            subtitle: 'تمكين الاستدامة والمرونة في استهلاك الطاقة',
+            points: [
+                '<strong>ألواح الطاقة الشمسية:</strong> توفير مصادر طاقة نظيفة وتقليل الاعتماد على المصادر التقليدية.',
+                '<strong>مولدات الطاقة الموثوقة:</strong> ضمان استمرارية التشغيل وتوفير إمدادات طاقة احتياطية.'
+            ]
+        }
+    };
+
+    const solutionTabs = document.querySelectorAll('.solution-tab');
+    const solutionsContent = document.getElementById('solutions-content');
+
+    function updateSolutionContent(key) {
+        const data = solutionsData[key];
+        solutionsContent.innerHTML = `
+            <h3 class="text-2xl font-bold text-slate-800 mb-2 tajawal-bold">${data.title}</h3>
+            <p class="text-slate-500 mb-6">${data.subtitle}</p>
+            <ul class="space-y-4 text-slate-700 list-inside">
+                ${data.points.map(point => `<li class="flex items-start"><span class="text-blue-500 font-bold mr-2 ml-2">✓</span><span>${point}</span></li>`).join('')}
+            </ul>
+        `;
+    }
+
+    solutionTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            solutionTabs.forEach(t => t.classList.remove('active-tab'));
+            tab.classList.add('active-tab');
+            updateSolutionContent(tab.dataset.target);
+        });
+    });
+
+    updateSolutionContent('monitoring');
+
+    const ctx = document.getElementById('penetrationChart').getContext('2d');
+    const penetrationChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['الدوائر التلفزيونية المغلقة التجارية', 'أمن المدارس والمستشピات', 'أمن المكاتب والمنشآت الصناعية', 'أمن المراكز التجارية والمتاجر الكبرى'],
+            datasets: [{
+                label: 'نسبة الانتشار',
+                data: [95, 95, 90, 90],
+                backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                borderColor: 'rgba(59, 130, 246, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': ' + context.raw + '%';
+                        }
+                    },
+                    rtl: true,
+                    bodyFont: {
+                       family: 'Tajawal'
+                    },
+                     titleFont: {
+                       family: 'Tajawal'
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: {
+                        callback: function(value) {
+                            return value + '%'
+                        }
+                    }
+                },
+                 y: {
+                     ticks: {
+                         font: {
+                           family: 'Tajawal',
+                           size: 14
+                         }
+                     }
+                 }
+            }
+        }
+    });
+
+    const statNumbers = document.querySelectorAll('.stat-number');
+    const statsSection = document.getElementById('stats');
+    let animated = false;
+
+    function animateStats() {
+        if(animated) return;
+        statNumbers.forEach(counter => {
+            const target = +counter.getAttribute('data-target');
+            const duration = 1500;
+            const stepTime = 20;
+            const steps = duration / stepTime;
+            const increment = target / steps;
+            let current = 0;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    clearInterval(timer);
+                    counter.innerText = target.toLocaleString('en-US', { minimumFractionDigits: target % 1 === 0 ? 0 : 2, maximumFractionDigits: 2 });
+                } else {
+                     counter.innerText = current.toLocaleString('en-US', { minimumFractionDigits: target % 1 === 0 ? 0 : 2, maximumFractionDigits: 2 });
+                }
+            }, stepTime);
+        });
+        animated = true;
+    }
+    
+    const observer = new IntersectionObserver((entries) => {
+        if(entries[0].isIntersecting) {
+            animateStats();
+            observer.disconnect();
+        }
+    }, { threshold: 0.5 });
+    
+    observer.observe(statsSection);
+
+    const mobileNav = document.getElementById('mobile-nav');
+    mobileNav.addEventListener('change', (e) => {
+        window.location.hash = e.target.value;
+    });
+
+});
+</script>
+</body>
+</html>
